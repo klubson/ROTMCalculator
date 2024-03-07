@@ -1,16 +1,20 @@
 package com.example.login;
 
+import com.example.mainmenu.MainMenu;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 
-public class Login extends JPanel {
-
+public class Login extends JFrame {
+    JPanel container;
     JPanel imgPanel;
     JPanel form;
     JLabel usernameLabel;
@@ -20,6 +24,7 @@ public class Login extends JPanel {
     JButton showPasswordButton;
     JButton loginButton;
     JButton forgotPasswordButton;
+    JButton registerButton;
 
     Boolean passwordShown = false;
 
@@ -29,6 +34,15 @@ public class Login extends JPanel {
     }
 
     private void initUI() throws URISyntaxException, IOException {
+
+        this.setSize(new Dimension(600, 500));
+        this.setTitle("Redaktor of The Month Calculator");
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+
+        container = new JPanel();
+        container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
 
         imgPanel = new JPanel();
         URL res = getClass().getClassLoader().getResource("loginPanelChelseaPolandImage.jpg");
@@ -47,6 +61,7 @@ public class Login extends JPanel {
         showPasswordButton = new JButton();
         loginButton = new JButton("Zaloguj");
         forgotPasswordButton = new JButton("Zapomniałem hasła");
+        registerButton = new JButton("Zarejestruj się");
 
         form.setLayout(new GridBagLayout());
 
@@ -61,6 +76,7 @@ public class Login extends JPanel {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = GridBagConstraints.WEST;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         form.add(usernameTextField, gridBagConstraints);
 
         gridBagConstraints = new GridBagConstraints();
@@ -75,6 +91,7 @@ public class Login extends JPanel {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = GridBagConstraints.WEST;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new Insets(10, 0, 0, 0);
         form.add(passwordField, gridBagConstraints);
 
@@ -93,9 +110,11 @@ public class Login extends JPanel {
         form.add(showPasswordButton, gridBagConstraints);
 
         gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = GridBagConstraints.EAST;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = GridBagConstraints.CENTER;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new Insets(10, 0, 0, 0);
         form.add(loginButton, gridBagConstraints);
 
@@ -106,8 +125,17 @@ public class Login extends JPanel {
         gridBagConstraints.insets = new Insets(10, 0, 0, 0);
         form.add(forgotPasswordButton, gridBagConstraints);
 
-        add(imgPanel);
-        add(form);
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = GridBagConstraints.WEST;
+        gridBagConstraints.insets = new Insets(10, 10, 0, 0);
+        form.add(registerButton, gridBagConstraints);
+
+        container.add(imgPanel);
+        container.add(form);
+
+        add(container);
 
     }
 
@@ -137,13 +165,31 @@ public class Login extends JPanel {
             }
             showPasswordButton.setIcon(new ImageIcon(image));
         });
-        loginButton.addActionListener(e -> {
+        AbstractAction buttonPressed = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
-        });
+                try {
+                    dispose();
+                    new MainMenu().setVisible(true);
+
+                } catch (URISyntaxException | IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+
+            }
+        };
+        loginButton.addActionListener(buttonPressed);
+        loginButton.getInputMap(javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW).
+                put(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0), "Enter_pressed");
+        loginButton.getActionMap().put("Enter_pressed", buttonPressed);
         forgotPasswordButton.addActionListener(e -> {
 
         });
+        registerButton.addActionListener(e -> {
 
+        });
 
     }
 
