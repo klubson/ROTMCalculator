@@ -46,6 +46,7 @@ public class Login extends JFrame {
 
         imgPanel = new JPanel();
         URL res = getClass().getClassLoader().getResource("loginPanelChelseaPolandImage.jpg");
+        assert res != null;
         File file = Paths.get(res.toURI()).toFile();
 
         Image image = ImageIO.read(file).getScaledInstance(600, 300, Image.SCALE_SMOOTH);
@@ -103,6 +104,7 @@ public class Login extends JFrame {
         showPasswordButton.setSize(10, 10);
 
         res = getClass().getClassLoader().getResource("showPassword.jpg");
+        assert res != null;
         file = Paths.get(res.toURI()).toFile();
         image = ImageIO.read(file).getScaledInstance(showPasswordButton.getWidth(), showPasswordButton.getHeight(), Image.SCALE_SMOOTH);
         showPasswordButton.setIcon(new ImageIcon(image));
@@ -153,6 +155,7 @@ public class Login extends JFrame {
             URL res = getClass().getClassLoader().getResource(imagePath);
             File file;
             try {
+                assert res != null;
                 file = Paths.get(res.toURI()).toFile();
             } catch (URISyntaxException ex) {
                 throw new RuntimeException(ex);
